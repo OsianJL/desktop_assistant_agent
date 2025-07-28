@@ -1,0 +1,9 @@
+# Ignorar entorno virtual
+.venv/
+
+# Ignorar archivos de configuración local
+.env
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
