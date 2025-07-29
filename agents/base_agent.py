@@ -1,13 +1,14 @@
-from langchain.agents import initialize_agent, Tool
-from langchain_openai import ChatOpenAI
+from langchain.agents import initialize_agent, Tool, AgentExecutor  # type: ignore
 from langchain.agents.agent_types import AgentType
+from langchain.tools import BaseTool
 from tools.hello_tool import say_hello
 from tools.organize_by_year import organize_music_by_year
 from tools.flatten_and_clean_folders import flatten_and_clean_folders
 from config.settings import get_openai_model
+from typing import List
 
-def create_agent():
-    tools = [
+def create_agent() -> AgentExecutor:
+    tools: List[BaseTool] = [
         Tool(
             name="Saludo",
             func=say_hello,
