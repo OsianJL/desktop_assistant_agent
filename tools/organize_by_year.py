@@ -2,12 +2,10 @@ import os
 import shutil
 import datetime
 from rich import print
-from config.settings import DEFAULT_FOLDER_BASE
+from utils.path_utils import resolve_path  # 👈 nuevo import
 
 def organize_music_by_year(folder_name_or_path: str) -> str:
-    folder_path = folder_name_or_path
-    if not os.path.exists(folder_name_or_path):
-        folder_path = os.path.join(DEFAULT_FOLDER_BASE, folder_name_or_path)
+    folder_path = resolve_path(folder_name_or_path)  # 👈 ruta resuelta automáticamente
 
     if not os.path.exists(folder_path):
         return f"[red]Ruta no encontrada:[/] {folder_path}"
