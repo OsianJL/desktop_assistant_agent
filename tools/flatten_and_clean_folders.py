@@ -1,6 +1,5 @@
 import os
 import shutil
-from rich import print
 from rich.console import Console
 
 console = Console()
@@ -35,7 +34,7 @@ def flatten_and_clean_folders(target_folder: str) -> str:
     errors = 0
 
     # Step 2: Move all files from subdirectories to root
-    for root, dirs, files in os.walk(folder_path, topdown=False):
+    for root, _, files in os.walk(folder_path, topdown=False):
         if root == folder_path:
             continue  # Skip root folder itself
 
@@ -72,7 +71,7 @@ def flatten_and_clean_folders(target_folder: str) -> str:
     # Step 3: Delete all empty subdirectories
     deleted_folders = 0
 
-    for root, dirs, files in os.walk(folder_path, topdown=False):
+    for root, _, files in os.walk(folder_path, topdown=False):
         if root == folder_path:
             continue  # Don't delete the root folder itself
 
