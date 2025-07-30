@@ -1,21 +1,17 @@
 import os
 import shutil
 from rich.console import Console
-from utils.path_utils import resolve_path  # 👈 nuevo import
+from utils.path_utils import resolve_path
+from langchain.tools import Tool
 
 console = Console()
 
-def flatten_and_clean_folders(target_folder: str) -> str:
+def flatten_and_clean_folders(input_str: str = "") -> str:
     """
-    Flattens all files from subdirectories into the root folder.
-
-    Args:
-        target_folder (str): Absolute path or relative folder name (relative to DEFAULT_FOLDER_BASE)
-
-    Returns:
-        str: Summary report of the operation
+    Moves all files from subdirectories into the root of the specified folder.
+    Resolves the path relative to AI_File_Testing.
     """
-    folder_path = resolve_path(target_folder)  # 👈 unificación de resolución
+    folder_path = resolve_path(input_str.strip().strip("'\""))
 
     console.print(f"[bold green]📁 Target folder resolved to:[/bold green] {folder_path}")
 
@@ -65,3 +61,15 @@ def flatten_and_clean_folders(target_folder: str) -> str:
         f"{moved_files} files moved, {conflicts} renamed, "
         f"{errors} errors."
     )
+
+
+# Tool object for ToolLoader
+tool = Tool(
+    name="DesorganizadorDeCarpetas",
+    func=flatten_and_clean_folders,
+    description=(
+        "Mueve todos los archivos de subcarpetas a la carpeta raíz dentro de AI_File_Testing. "
+        "Evita sobrescrituras renombrando archivos si es necesario. "
+        "Úsalo con un path relativo como '2023' o con '' para actuar sobre la raíz."
+    )
+)
