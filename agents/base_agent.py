@@ -2,23 +2,26 @@ from langchain.agents import initialize_agent, Tool, AgentExecutor  # type: igno
 from langchain.agents.agent_types import AgentType
 from langchain.tools import BaseTool
 from tools.hello_tool import say_hello
-from tools.organize_by_year import organize_music_by_year
-from tools.flatten_and_clean_folders import flatten_and_clean_folders
-from tools.delete_empty_subdirs import delete_empty_subdirs  # 👈 nuevo import
+from tools.filesystem.organize_by_year import organize_music_by_year
+from tools.filesystem.flatten_and_clean_folders import flatten_and_clean_folders
+from tools.filesystem.delete_empty_subdirs import delete_empty_subdirs
+from tools.audio.open_audio_with_vlc import open_audio_with_vlc
+from tools.audio.play_audio_by_name import play_audio_by_name
 from config.settings import get_openai_model
 from typing import List
+
 
 def create_agent() -> AgentExecutor:
     tools: List[BaseTool] = [
         Tool(
             name="Saludo",
             func=say_hello,
-            description="Devuelve un saludo simple. Úsalo cuando te pidan saludar."
+            description="Devuelve un saludo simple. Úsalo cuando te pidan saludar.",
         ),
         Tool(
             name="OrganizadorMúsicaPorAño",
             func=organize_music_by_year,
-            description="Organiza archivos en una carpeta según su año de modificación. Requiere el nombre o ruta absoluta de la carpeta."
+            description="Organiza archivos en una carpeta según su año de modificación. Requiere el nombre o ruta absoluta de la carpeta.",
         ),
         Tool(
             name="DesorganizadorDeCarpetas",
@@ -39,12 +42,23 @@ def create_agent() -> AgentExecutor:
                 "Recibe una ruta absoluta o relativa a DEFAULT_FOLDER_BASE."
             ),
         ),
+        Tool(
+            name="ReproductorDeAudio",
+            func=open_audio_with_vlc,
+            description="Abre un archivo de audio con VLC. Recibe una ruta absoluta o relativa a DEFAULT_FOLDER_BASE.",
+        ),
+        Tool(
+            name="ReproducirAudio",
+            func=play_audio_by_name,
+            description=(
+                "Reproduce un archivo de audio por su nombre. "
+                "Busca automáticamente en la carpeta AI_File_Testing y todas sus subcarpetas. "
+                "Solo debes indicar el nombre exacto del archivo, por ejemplo: 'sotano 1 acustico.mp3'."
+            ),
+        ),
     ]
 
     llm = get_openai_model()
     return initialize_agent(
-        tools=tools,
-        llm=llm,
-        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=True
+        tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True
     )
