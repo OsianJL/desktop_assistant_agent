@@ -1,10 +1,24 @@
 import os
 
-DEFAULT_FOLDER_BASE = "/mnt/c/Users/osian/Desktop"
+AGENT_ROOT_DIR = "/mnt/c/Users/osian/Desktop/AI_File_Testing"
 
-def resolve_path(target_folder: str) -> str:
+def resolve_path(relative_path: str) -> str:
     """
-    Converts a relative folder name into an absolute path using DEFAULT_FOLDER_BASE.
-    If the input is already absolute, returns it unchanged.
+    Resolves a relative path inside AGENT_ROOT_DIR and ensures no access outside is allowed.
+    
+    Args:
+        relative_path (str): File or folder path relative to AGENT_ROOT_DIR.
+    
+    Returns:
+        str: Absolute path within AGENT_ROOT_DIR.
+    
+    Raises:
+        ValueError: If path resolves outside of AGENT_ROOT_DIR.
     """
-    return target_folder if os.path.isabs(target_folder) else os.path.join(DEFAULT_FOLDER_BASE, target_folder)
+    full_path = os.path.abspath(os.path.join(AGENT_ROOT_DIR, relative_path))
+
+    # Prevent path traversal
+    if not os.path.commonpath([AGENT_ROOT_DIR, full_path]) == AGENT_ROOT_DIR:
+        raise ValueError(f"Access denied outside agent directory: {full_path}")
+
+    return full_path
