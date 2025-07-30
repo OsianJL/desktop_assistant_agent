@@ -1,0 +1,6 @@
+2025-07-30 17:30:22 - INFO - 🔒 SECURITY - PATH_RESOLUTION - Resolved path ''test_folder'' to '/mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder'
+2025-07-30 17:30:22 - INFO - ✅ MOVE - Path: test_folder/subfolder1/file1.txt - Details: Moved to /mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder/file1.txt
+2025-07-30 17:30:22 - INFO - ✅ MOVE - Path: test_folder/subfolder1/same_name.txt - Details: Moved to /mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder/same_name.txt
+2025-07-30 17:30:22 - INFO - ✅ MOVE - Path: test_folder/subfolder2/file2.txt - Details: Moved to /mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder/file2.txt
+2025-07-30 17:30:22 - INFO - ✅ MOVE - Path: test_folder/subfolder2/same_name.txt - Details: Moved to /mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder/subfolder2_same_name.txt
+2025-07-30 17:31:37 - INFO - 🔒 SECURITY - PATH_RESOLUTION - Resolved path ''test_folder'' to '/mnt/c/Users/osian/Desktop/AI_File_Testing/test_folder'

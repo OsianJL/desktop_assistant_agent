@@ -6,6 +6,7 @@ from langchain.tools import Tool
 
 console = Console()
 
+
 def flatten_and_clean_folders(input_str: str = "") -> str:
     """
     Moves all files from subdirectories into the root of the specified folder.
@@ -13,7 +14,9 @@ def flatten_and_clean_folders(input_str: str = "") -> str:
     """
     folder_path = resolve_path(input_str.strip().strip("'\""))
 
-    console.print(f"[bold green]📁 Target folder resolved to:[/bold green] {folder_path}")
+    console.print(
+        f"[bold green]📁 Target folder resolved to:[/bold green] {folder_path}"
+    )
 
     if not os.path.exists(folder_path):
         console.print(f"[bold red]❌ Folder does not exist:[/bold red] {folder_path}")
@@ -42,7 +45,9 @@ def flatten_and_clean_folders(input_str: str = "") -> str:
 
                 counter = 1
                 while os.path.exists(dst_path):
-                    new_filename = f"{relative_subdir.replace(os.sep, '_')}_{base}_{counter}{ext}"
+                    new_filename = (
+                        f"{relative_subdir.replace(os.sep, '_')}_{base}_{counter}{ext}"
+                    )
                     dst_path = os.path.join(folder_path, new_filename)
                     counter += 1
 
@@ -71,5 +76,5 @@ tool = Tool(
         "Mueve todos los archivos de subcarpetas a la carpeta raíz dentro de AI_File_Testing. "
         "Evita sobrescrituras renombrando archivos si es necesario. "
         "Úsalo con un path relativo como '2023' o con '' para actuar sobre la raíz."
-    )
+    ),
 )
