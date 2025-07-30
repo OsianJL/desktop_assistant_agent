@@ -1,19 +1,12 @@
 import os
 from rich.console import Console
 from utils.path_utils import resolve_path
+from langchain.tools import Tool
 
 console = Console()
 
-def delete_empty_subdirs(folder_path: str) -> str:
-    """
-    Deletes all empty subdirectories within the given folder path.
-
-    Args:
-        folder_path (str): Absolute path or relative folder name
-
-    Returns:
-        str: Summary of deletion process
-    """
+def delete_empty_subdirs(input_str: str = "") -> str:
+    folder_path = input_str.strip().strip("'\"")
     folder_path = resolve_path(folder_path)
     deleted_folders = 0
     errors = 0
@@ -36,3 +29,13 @@ def delete_empty_subdirs(folder_path: str) -> str:
             errors += 1
 
     return f"🧹 Deleted {deleted_folders} empty folders. Errors: {errors}."
+
+# ToolLoader-compatible export
+tool = Tool(
+    name="BorradorDeCarpetasVacias",
+    func=delete_empty_subdirs,
+    description=(
+        "Elimina subcarpetas vacías dentro de una carpeta relativa a AI_File_Testing. "
+        "Por ejemplo: '2024', 'grabaciones', o simplemente '' para la raíz."
+    )
+)
