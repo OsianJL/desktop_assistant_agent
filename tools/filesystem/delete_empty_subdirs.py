@@ -89,10 +89,10 @@ def delete_empty_subdirs(input_str: str = "") -> str:
 
 # ToolLoader-compatible export
 tool = Tool(
-    name="BorradorDeCarpetasVacias",
+    name="EmptyFolderCleaner",
     func=delete_empty_subdirs,
     description=(
-        "Elimina subcarpetas vacías dentro de una carpeta relativa a AI_File_Testing. "
-        "Por ejemplo: '2024', 'grabaciones', o simplemente '' para la raíz."
+        "Deletes empty subfolders within a folder relative to AI_File_Testing. "
+        "For example: '2024', 'music', or just '' for root."
     ),
 )

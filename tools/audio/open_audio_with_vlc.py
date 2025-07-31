@@ -62,11 +62,11 @@ def open_audio_with_vlc(input_str: str = "") -> str:
 
 # ToolLoader-compatible export
 tool = Tool(
-    name="ReproductorDeAudio",
+    name="AudioPlayer",
     func=open_audio_with_vlc,
     description=(
-        "Abre un archivo de audio con VLC. "
-        "Recibe una ruta relativa a la carpeta AI_File_Testing, como '2023/test.mp3' o 'grabaciones/test2.m4a'. "
-        "También puedes usar solo el nombre si el archivo está en la raíz."
+        "Opens an audio file with VLC. "
+        "Takes a relative path to the AI_File_Testing folder, like '2023/test.mp3' or 'music/test2.m4a'. "
+        "You can also use just the filename if the file is in the root."
     ),
 )

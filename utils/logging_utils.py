@@ -4,30 +4,30 @@ from datetime import datetime
 from typing import Optional
 from utils.path_utils import AGENT_ROOT_DIR
 
-# Configurar el directorio de logs
+# Configure logs directory
 LOGS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
 os.makedirs(LOGS_DIR, exist_ok=True)
 
-# Crear el nombre del archivo de log con la fecha
+# Create log filename with date
 log_file = os.path.join(
     LOGS_DIR, f"file_operations_{datetime.now().strftime('%Y%m%d')}.log"
 )
 
-# Configurar el logger principal
+# Configure main logger
 logger = logging.getLogger("file_operations")
 logger.setLevel(logging.INFO)
 
-# Configurar el formato del log
+# Configure log format
 formatter = logging.Formatter(
     "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-# Handler para archivo
+# File handler
 file_handler = logging.FileHandler(log_file)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# Handler para consola
+# Console handler
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
@@ -41,29 +41,29 @@ def log_file_operation(
     error: Optional[Exception] = None,
 ) -> None:
     """
-    Registra una operación de archivo en el log.
+    Logs a file operation to the log file.
 
     Args:
-        operation: Tipo de operación (CREATE, READ, UPDATE, DELETE, MOVE, etc.)
-        path: Ruta del archivo afectado
-        success: Si la operación fue exitosa
-        details: Detalles adicionales de la operación
-        error: Excepción si ocurrió un error
+        operation: Type of operation (CREATE, READ, UPDATE, DELETE, MOVE, etc.)
+        path: Path of the affected file
+        success: Whether the operation was successful
+        details: Additional operation details
+        error: Exception if an error occurred
     """
-    # Asegurarse de que la ruta es relativa a AGENT_ROOT_DIR
+    # Ensure path is relative to AGENT_ROOT_DIR
     try:
         relative_path = os.path.relpath(path, AGENT_ROOT_DIR)
     except ValueError:
-        relative_path = path  # Si la ruta está fuera de AGENT_ROOT_DIR
+        relative_path = path  # If path is outside AGENT_ROOT_DIR
 
-    # Construir el mensaje base
+    # Build base message
     msg = f"{operation} - Path: {relative_path}"
 
-    # Añadir detalles si existen
+    # Add details if they exist
     if details:
         msg += f" - Details: {details}"
 
-    # Log según el resultado
+    # Log based on result
     if success:
         logger.info(f"✅ {msg}")
     else:
@@ -75,12 +75,14 @@ def log_security_event(
     event_type: str, description: str, severity: str = "INFO"
 ) -> None:
     """
-    Registra un evento de seguridad en el log.
+    Logs a security-related event.
 
     Args:
-        event_type: Tipo de evento de seguridad
-        description: Descripción del evento
-        severity: Nivel de severidad (INFO, WARNING, ERROR)
+        event_type: Type of security event
+        description: Detailed description of the event
+        severity: Event severity level (default: INFO)
     """
-    level = getattr(logging, severity.upper())
-    logger.log(level, f"🔒 SECURITY - {event_type} - {description}")
+    logger.log(
+        getattr(logging, severity.upper(), logging.INFO),
+        f"🔒 Security Event - {event_type}: {description}",
+    )
