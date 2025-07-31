@@ -44,6 +44,74 @@ pip install -r requirements.txt
 OPENAI_API_KEY=your_api_key_here
 ```
 
+## 🛡️ File Safety System
+
+The agent includes a comprehensive file safety system to ensure all file operations are secure and contained within the designated AI_File_Testing directory. This system provides multiple layers of protection:
+
+1. **Path Containment**: All operations are restricted to the AI_File_Testing directory
+2. **File Type Validation**: Only allows operations on known safe file types
+3. **Size Limits**: Prevents operations on files exceeding size limits
+4. **Permission Checks**: Validates appropriate OS-level permissions
+5. **Operation-specific Validation**: Custom checks for read, write, delete, and move operations
+
+### Installation
+
+The file safety system requires the python-magic library:
+```bash
+pip install python-magic
+```
+
+### Usage Example
+
+Here's how to use the file safety system in your code:
+
+```python
+from utils.file_safety import validate_file_operation
+
+def process_audio_file(file_path: str):
+    # First, validate the operation
+    is_safe, message = validate_file_operation(
+        operation='read',
+        target_path=file_path,
+        allowed_types=['audio'],  # Only allow audio files
+        max_size=100 * 1024 * 1024  # 100MB limit
+    )
+    
+    if not is_safe:
+        raise ValueError(f"Unsafe operation: {message}")
+        
+    # If we get here, the operation is safe to proceed
+    # ... do the actual file processing ...
+```
+
+### Protected File Types
+
+The system currently supports these file categories:
+
+- **Audio**: MP3, WAV, FLAC, OGG, M4A
+- **Documents**: TXT, PDF, JSON
+
+### Safety Features
+
+1. **Path Validation**:
+   - Prevents access outside AI_File_Testing directory
+   - Handles path normalization and traversal attempts
+
+2. **File Type Safety**:
+   - Uses MIME type detection (not just extensions)
+   - Whitelist of allowed file types
+   - Categorized by file type (audio, documents, etc.)
+
+3. **Size Protection**:
+   - Default maximum file size: 500MB
+   - Configurable per operation
+
+4. **Operation Safety**:
+   - Read: Verifies file existence and read permissions
+   - Write: Validates parent directory and write permissions
+   - Delete: Prevents deletion of non-empty directories
+   - Move: Comprehensive path and permission validation
+
 ## 🎮 Usage
 
 1. Start the agent:
