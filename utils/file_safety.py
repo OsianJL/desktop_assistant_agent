@@ -1,10 +1,13 @@
 import os
-import magic
 from typing import List, Optional, Tuple
+from typing_extensions import TypeAlias
+import magic
+
+FilePath: TypeAlias = str  # Type alias for file paths
 from utils.path_utils import AGENT_ROOT_DIR, resolve_path
 
 # Define safe file types and their magic numbers/MIME types
-SAFE_FILE_TYPES = {
+SAFE_FILE_TYPES: dict[str, List[str]] = {
     "audio": [
         "audio/mpeg",  # MP3
         "audio/wav",  # WAV
@@ -26,7 +29,7 @@ MAX_FILE_SIZE = 500 * 1024 * 1024
 
 def validate_file_operation(
     operation: str,
-    target_path: str,
+    target_path: FilePath,
     allowed_types: Optional[List[str]] = None,
     max_size: Optional[int] = None,
 ) -> Tuple[bool, str]:
@@ -62,13 +65,18 @@ def validate_file_operation(
 
         # 4. For existing files, validate file type if specified
         if os.path.exists(full_path) and allowed_types:
+            # Use python-magic to detect file type
             mime = magic.Magic(mime=True)
-            file_type = mime.from_file(full_path)
+            try:
+                file_type: str = mime.from_file(full_path)  # type: ignore
+            except Exception as e:
+                return False, f"Failed to determine file type: {str(e)}"
 
-            allowed_mime_types = []
+            allowed_mime_types: List[str] = []
             for type_category in allowed_types:
                 if type_category in SAFE_FILE_TYPES:
-                    allowed_mime_types.extend(SAFE_FILE_TYPES[type_category])
+                    mime_types: List[str] = SAFE_FILE_TYPES[type_category]
+                    allowed_mime_types.extend(mime_types)
 
             if file_type not in allowed_mime_types:
                 return (
@@ -118,7 +126,7 @@ def validate_file_operation(
 
 def is_safe_file_operation(
     operation: str,
-    target_path: str,
+    target_path: FilePath,
     allowed_types: Optional[List[str]] = None,
     max_size: Optional[int] = None,
 ) -> bool:
