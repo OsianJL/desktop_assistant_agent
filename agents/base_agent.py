@@ -10,13 +10,13 @@ from typing import List
 def create_agent() -> AgentExecutor:
     manual_tools: List[BaseTool] = [
         Tool(
-            name="Saludo",
+            name="Greeting",
             func=say_hello,
-            description="Devuelve un saludo simple. Úsalo cuando te pidan saludar.",
+            description="Returns a simple greeting. Use it when asked to say hello.",
         ),
     ]
 
-    dynamic_tools = load_all_tools()  # ← lo que cargue el ToolLoader
+    dynamic_tools = load_all_tools()  # ← Tools loaded by ToolLoader
 
     tools = manual_tools + dynamic_tools
 

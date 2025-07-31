@@ -67,11 +67,11 @@ def play_audio_by_name(input_str: str = "") -> str:
 
 # ToolLoader-compatible export
 tool = Tool(
-    name="ReproducirAudio",
+    name="AudioFinder",
     func=play_audio_by_name,
     description=(
-        "Reproduce un archivo de audio por su nombre. "
-        "Lo busca automáticamente dentro de la carpeta AI_File_Testing y todas sus subcarpetas. "
-        "Solo debes indicar el nombre exacto del archivo, por ejemplo: 'sotano 1 acustico.mp3'."
+        "Plays an audio file by its name. "
+        "Automatically searches for it inside the AI_File_Testing folder and all its subfolders. "
+        "Just provide the exact filename, for example: 'basement_recording.mp3'."
     ),
 )

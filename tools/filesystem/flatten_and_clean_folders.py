@@ -73,25 +73,22 @@ def flatten_and_clean_folders(input_str: str = "") -> str:
                     conflicts += 1
 
                 # Validate the move operation for both source and destination
-                # Get paths relative to AGENT_ROOT_DIR
                 rel_src_path = os.path.relpath(src_path, AGENT_ROOT_DIR)
                 rel_dst_path = os.path.relpath(dst_path, AGENT_ROOT_DIR)
 
                 # Debug logging
                 console.print(f"[blue]Debug - Source path:[/blue]")
                 console.print(f"  Original: {src_path}")
-                console.print(f"  Relative to AGENT_ROOT_DIR: {rel_src_path}")
+                console.print(f"  Relative to AI_File_Testing: {rel_src_path}")
                 console.print(f"[blue]Debug - Destination path:[/blue]")
                 console.print(f"  Original: {dst_path}")
-                console.print(f"  Relative to AGENT_ROOT_DIR: {rel_dst_path}")
+                console.print(f"  Relative to AI_File_Testing: {rel_dst_path}")
 
                 is_safe_src, msg_src = validate_file_operation(
-                    operation="read",
-                    target_path=rel_src_path,
+                    operation="read", target_path=rel_src_path
                 )
                 is_safe_dst, msg_dst = validate_file_operation(
-                    operation="write",
-                    target_path=rel_dst_path,
+                    operation="write", target_path=rel_dst_path
                 )
 
                 if not is_safe_src:
@@ -130,13 +127,13 @@ def flatten_and_clean_folders(input_str: str = "") -> str:
         return error_msg
 
 
-# Tool object for ToolLoader
+# ToolLoader-compatible export
 tool = Tool(
-    name="DesorganizadorDeCarpetas",
+    name="FolderFlattener",
     func=flatten_and_clean_folders,
     description=(
-        "Mueve todos los archivos de subcarpetas a la carpeta raíz dentro de AI_File_Testing. "
-        "Evita sobrescrituras renombrando archivos si es necesario. "
-        "Úsalo con un path relativo como '2023' o con '' para actuar sobre la raíz."
+        "Moves all files from subfolders to the root folder within AI_File_Testing. "
+        "Avoids overwriting by renaming files if necessary. "
+        "Use with a relative path like '2023' or '' for root."
     ),
 )
